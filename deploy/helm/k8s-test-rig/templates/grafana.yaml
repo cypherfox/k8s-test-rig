@@ -1,0 +1,56 @@
+
+---
+
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  labels:
+    dashboards: "grafana"
+spec:
+  config:
+    log:
+      mode: "console"
+    auth:
+      disable_login_form: "true"
+    security:
+      admin_user: root
+      admin_password: secret
+  ingress:
+    spec:
+      ingressClassName: nginx
+      rules:
+        - host: {{ .Values.ingress.grafanaHost | quote }}
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: grafana-service
+                    port:
+                      number: 3000
+                path: /
+                pathType: Prefix
+      tls:
+        - hosts:
+            - {{ .Values.ingress.grafanaHost | quote }}
+          secretName: grafana-tls
+---
+
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-sample1
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: "grafana"
+  datasource:
+    name: prom1
+    type: prometheus
+    access: proxy
+    url: http://test-rig-kube-promethe-prometheus.test-rig.svc:9090
+    isDefault: true
+    jsonData:
+      'tlsSkipVerify': true
+      'timeInterval': "5s"
+    editable: true

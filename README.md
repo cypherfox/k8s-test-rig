@@ -9,10 +9,35 @@ This includes
 * [loki](https://github.com/grafana/loki)
 * [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator)
 * [grafana-operator](https://github.com/grafana-operator/grafana-operator)
-* PowerDNS
+* (CoreDNS) - already present in virtually all Kubernetes clusters.
+* HashiCorp Vault
 
 all set up from a single helm chart.
 
 This is intended to provide a complete managed kubernetes suite to be used in local test setups or air-gapped environments.
 
 The setup does not scale, does not provide real security. It is not suited from production use by design.
+
+## Similar Packages
+
+The [Big Bang] project of the DoD Platform One aims for a similar goal as the K8s test rig, but has a larger scope. 
+It allows the resultant workload setups to be actually be used in production and needs some prerequisite setup to 
+provide the the security requirements and hardening that a security sensitive environment like the military requires.
+
+## Prerequisites
+
+You need the following commands installed localy on your computer:
+
+* **make**: Build control tool. If it is not installed already, check the basic development tools of your OS distribution. E.g. the package `build-essentials` on Ubuntu
+* **helm**: Check the [installation instructions](https://helm.sh/docs/intro/install/)
+* **kubectl**: Check the [installation instructions](https://kubernetes.io/docs/tasks/tools/)
+* **smartcli**
+* **kind**
+
+## Deploy Stack
+
+This will create a new kind cluster of the name `my-cluster`
+
+```
+export CLUSTER_NAME="my-cluster" && make helm-package && kind create cluster -name $CLUSTER_NAME -config kind-conf.yaml && make deploy-crds k8s-namespaces helm-deploy
+```
