@@ -46,6 +46,9 @@ dependencies:
   - name: loki-stack
     version: "2.9.11"
     repository: https://grafana.github.io/helm-charts
+  - name: "promtail"
+    repository: "https://grafana.github.io/helm-charts"
+    version: "^6.15.3"
   - name: kube-prometheus-stack
     version: "52.1.0"
     repository: https://prometheus-community.github.io/helm-charts

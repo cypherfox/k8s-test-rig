@@ -97,6 +97,7 @@ cert-manager:
 loki-stack:
   namespace: monitoring
   grafana.enabled: false
+  promtail.enabled: false
 
 kube-prometheus-stack:
   grafana:
