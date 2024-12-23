@@ -30,8 +30,11 @@ LDFLAGS    := "-extldflags=-static -X '$(GO_MODULE)/pkg/version.BuildTime=$(TIME
 helm-package:
 	make -C deploy/helm package
 
+# Linkerd CRDs will be deployed as a child Helm Chart.
 deploy-crds:
 	kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.crds.yaml
+	kubectl apply --server-side --force-conflicts -f https://github.com/grafana/grafana-operator/releases/download/v5.15.1/crds.yaml
+
 
 k8s-namespaces: 
 	kubectl create namespace cert-manager 
@@ -57,6 +60,8 @@ kind-load: docker-image
 kind-update-running-version:
 	kubectl patch deployment cloud-native-demo -p '{"template":{"spec":{"containers":[{"name":"cloud-native-demo","image":"localhost:5001/bugsim:$(VERSION)"}]}}}'
 
+check-setup:
+	if ! test -d /var/local-path-provider || echo "directory for local storage >>var
 
 .PHONEY: kind-load docker-image helm-lint
 

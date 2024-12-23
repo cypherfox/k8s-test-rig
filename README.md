@@ -16,7 +16,8 @@ all set up from a single helm chart.
 
 This is intended to provide a complete managed kubernetes suite to be used in local test setups or air-gapped environments.
 
-The setup does not scale, does not provide real security. It is not suited from production use by design.
+The setup does not scale, does not provide real security. It is not suited for production-use by design.
+It may also be useful in a home- lab or home automation setting.
 
 ## Similar Packages
 

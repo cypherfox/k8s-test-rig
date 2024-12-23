@@ -90,14 +90,26 @@ linkerd-control-plane:
 
 external-dns:
   provider: coredns
+  serviceMonitor:
+    enabled: true
 
 cert-manager:
   namespace: cert-manager
 
-loki-stack:
-  namespace: monitoring
-  grafana.enabled: false
-  promtail.enabled: false
+loki:
+  deploymentMode: SingleBinary
+  singleBinary:
+    replicas: 1
+  write:
+    replicas: 0
+  read:
+    replicas: 0
+  backend:
+    replicas: 0
+  loki:
+    storage:
+      type: filesystem
+    useTestSchema: true
 
 kube-prometheus-stack:
   grafana:
